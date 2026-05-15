@@ -1,5 +1,10 @@
 # pw-practice-app
 
+![Angular](https://img.shields.io/badge/Angular-14-red)
+![Playwright](https://img.shields.io/badge/Playwright-E2E-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 A lightweight Angular 14 app based on Akveo ngx-admin, intended for UI automation practice with Playwright.
 
 ## Features
@@ -54,6 +59,54 @@ A lightweight Angular 14 app based on Akveo ngx-admin, intended for UI automatio
 ```
 https://github.com/akveo/ngx-admin
 ```
+
+## Automation Architecture
+
+This repository is designed to support scalable UI automation practices using Playwright.
+
+### Key Goals
+- Maintainable automation structure
+- Reliable UI interaction handling
+- Scalable page object implementation
+- Automation learning playground
+
+### Recommended Future Improvements
+- Page Object Model enhancement
+- GitHub Actions integration
+- Allure reporting
+- Cross-browser execution
+- Trace viewer integration
+- Screenshot capture on failure
+
+## Testing Strategy
+
+The project is intended to support:
+
+- UI automation testing
+- Functional validation
+- Cross-browser testing
+- Responsive UI testing
+- Regression testing
+
+## CI/CD Vision
+
+Future CI/CD implementation may include:
+
+- GitHub Actions workflows
+- Automated Playwright execution
+- HTML report publishing
+- Failure screenshot artifacts
+- Scheduled regression runs
+
+## Documentation
+
+Recommended additional documentation:
+
+- framework architecture
+- locator strategy
+- fixture management
+- test data handling
+- execution strategy
 
 ## License
 MIT
