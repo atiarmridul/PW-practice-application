@@ -146,5 +146,164 @@ This project helps practice:
 - Repository Owner: Atiar Mridul
 - GitHub Profile: https://github.com/atiarmridul
 
+## Playwright MCP Setup
+
+This project can be inspected with Playwright MCP from VS Code or another MCP-enabled agent.
+
+The workspace MCP configuration is stored in:
+
+```txt
+.vscode/mcp.json
+```
+
+Expected server configuration:
+
+```json
+{
+  "servers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+To use Playwright MCP:
+
+1. Start the Angular app:
+   - `npm run start`
+2. Open the VS Code Command Palette:
+   - `Cmd + Shift + P`
+3. Run:
+   - `MCP: List Servers`
+4. Start the `playwright` MCP server.
+5. Ask the agent to inspect:
+   - `http://localhost:4200/`
+
+Example prompt:
+
+```txt
+Use Playwright MCP to inspect http://localhost:4200 and suggest a Playwright test.
+```
+
+## Useful App Pages For Testing
+
+These routes are useful for Playwright practice:
+
+- `http://localhost:4200/pages/iot-dashboard`
+- `http://localhost:4200/pages/forms/layouts`
+- `http://localhost:4200/pages/forms/datepicker`
+- `http://localhost:4200/pages/modal-overlays/dialog`
+- `http://localhost:4200/pages/modal-overlays/window`
+- `http://localhost:4200/pages/modal-overlays/popover`
+- `http://localhost:4200/pages/modal-overlays/toastr`
+- `http://localhost:4200/pages/modal-overlays/tooltip`
+- `http://localhost:4200/pages/tables/smart-table`
+- `http://localhost:4200/pages/tables/tree-grid`
+
+## Playwright Test Writing Pattern
+
+Recommended test flow:
+
+1. Navigate directly to the page route.
+2. Scope locators to a stable section or `nb-card`.
+3. Interact with user-visible controls.
+4. Assert the result with `expect`.
+
+Example:
+
+```ts
+import { test, expect } from '@playwright/test';
+
+test.describe('Form Layouts page', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('http://localhost:4200/pages/forms/layouts');
+  });
+
+  test('fills the inline form', async ({ page }) => {
+    const inlineForm = page.locator('nb-card', {
+      has: page.locator('nb-card-header', { hasText: 'Inline form' }),
+    });
+
+    await expect(inlineForm).toBeVisible();
+
+    await inlineForm.getByPlaceholder('Jane Doe').fill('Atiar Rahman');
+    await inlineForm.getByPlaceholder('Email').fill('atiar@example.com');
+    await inlineForm.locator('nb-checkbox').click();
+
+    await expect(inlineForm.getByPlaceholder('Jane Doe')).toHaveValue('Atiar Rahman');
+    await expect(inlineForm.getByPlaceholder('Email')).toHaveValue('atiar@example.com');
+    await expect(inlineForm.locator('nb-checkbox input')).toBeChecked();
+  });
+});
+```
+
+## Locator Strategy
+
+Prefer user-facing locators where possible:
+
+- `page.getByRole()`
+- `page.getByLabel()`
+- `page.getByPlaceholder()`
+- `page.getByText()`
+
+For Nebular cards, scope locators to the card title:
+
+```ts
+const card = page.locator('nb-card', {
+  has: page.locator('nb-card-header', { hasText: 'Card Title' }),
+});
+```
+
+This keeps tests more stable when multiple forms contain similar fields.
+
+## Validation Commands
+
+Run the app:
+
+```bash
+npm run start
+```
+
+Run all Playwright tests:
+
+```bash
+npx playwright test
+```
+
+Run only Chromium:
+
+```bash
+npx playwright test --project=chromium
+```
+
+Run one spec file:
+
+```bash
+npx playwright test tests/autoWaiting.spec.ts --project=chromium
+```
+
+Build the Angular app:
+
+```bash
+npx ng build
+```
+
+Check dependency security:
+
+```bash
+npm audit --audit-level=high
+```
+
+## Current Health Notes
+
+- Angular build passes.
+- Playwright tests pass across Chromium, Firefox, and WebKit when the app is running.
+- The dependency stack is old and `npm audit` reports vulnerabilities that need careful upgrade planning.
+- `.browserslistrc` still includes `IE 11`, which causes an Angular build warning.
+- `playwright.config.ts` does not currently start the Angular dev server automatically because `webServer` is commented out.
+
 ## License
 MIT
