@@ -1,0 +1,40 @@
+- generic [ref=e11]:
+  - navigation [ref=e13]:
+    - link "Back" [ref=e14] [cursor=pointer]:
+      - /url: "#"
+      - img [ref=e16]
+  - generic [ref=e23]:
+    - heading "Login" [level=1] [ref=e24]
+    - paragraph [ref=e25]: Hello! Log in with your email.
+    - form "Login" [ref=e26]:
+      - generic [ref=e27]:
+        - generic [ref=e28]: "Email address:"
+        - textbox "Email address:" [active] [ref=e29]:
+          - /placeholder: Email address
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: "Password:"
+          - link "Forgot Password?" [ref=e33] [cursor=pointer]:
+            - /url: /auth/request-password
+        - textbox "Password:" [ref=e34]:
+          - /placeholder: Password
+      - generic [ref=e37]:
+        - checkbox "Remember me" [ref=e38]
+        - generic [ref=e40]: Remember me
+      - button "Log In" [disabled] [ref=e41]
+    - region "Social sign in" [ref=e42]:
+      - text: "or enter with:"
+      - generic [ref=e43]:
+        - link [ref=e44] [cursor=pointer]:
+          - /url: https://github.com/akveo/nebular
+          - img [ref=e46]
+        - link [ref=e50] [cursor=pointer]:
+          - /url: https://www.facebook.com/akveo/
+          - img [ref=e52]
+        - link [ref=e57] [cursor=pointer]:
+          - /url: https://twitter.com/akveo_inc
+          - img [ref=e59]
+    - region "Register" [ref=e64]:
+      - text: Don't have an account?
+      - link "Register" [ref=e65] [cursor=pointer]:
+        - /url: /auth/register

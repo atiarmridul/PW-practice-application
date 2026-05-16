@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { getHealingLocator } from './helpers/locatorHelper'
 
 test.describe('Form Layouts page', () => {
   test.beforeEach(async ({ page }) => {
@@ -12,12 +13,30 @@ test.describe('Form Layouts page', () => {
 
     await expect(inlineForm).toBeVisible()
 
-    await inlineForm.getByPlaceholder('Jane Doe').fill('Atiar Rahman')
-    await inlineForm.getByPlaceholder('Email').fill('atiar@example.com')
-    await inlineForm.locator('nb-checkbox').click()
+    const nameInput = await getHealingLocator(inlineForm, {
+      role: 'textbox',
+      name: 'Jane Doe',
+      placeholder: 'Jane Doe',
+      css: 'input[placeholder="Jane Doe"]',
+    })
 
-    await expect(inlineForm.getByPlaceholder('Jane Doe')).toHaveValue('Atiar Rahman')
-    await expect(inlineForm.getByPlaceholder('Email')).toHaveValue('atiar@example.com')
+    const emailInput = await getHealingLocator(inlineForm, {
+      role: 'textbox',
+      name: 'Email',
+      placeholder: 'Email',
+      css: 'input[placeholder="Email"]',
+    })
+
+    const rememberMeCheckbox = await getHealingLocator(inlineForm, {
+      css: 'nb-checkbox',
+    })
+
+    await nameInput.fill('Atiar Rahman')
+    await emailInput.fill('atiar@example.com')
+    await rememberMeCheckbox.click()
+
+    await expect(nameInput).toHaveValue('Atiar Rahman')
+    await expect(emailInput).toHaveValue('atiar@example.com')
     await expect(inlineForm.locator('nb-checkbox input')).toBeChecked()
   })
 })

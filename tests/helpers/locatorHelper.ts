@@ -27,6 +27,25 @@ type DomCandidate = {
   hasHref: boolean;
 };
 
+type LocatorRoot = Page | Locator;
+
+type HealingLocatorCandidate = {
+  description: string;
+  locator: Locator;
+};
+
+export type HealingLocatorOptions = {
+  role?: Parameters<Page["getByRole"]>[0];
+  name?: string | RegExp;
+  label?: string | RegExp;
+  placeholder?: string | RegExp;
+  text?: string | RegExp;
+  testId?: string | RegExp;
+  css?: string;
+  xpath?: string;
+  timeout?: number;
+};
+
 function toXPathLiteral(value: string): string {
   if (!value.includes("'")) return `'${value}'`;
   if (!value.includes('"')) return `"${value}"`;
@@ -66,6 +85,90 @@ function shouldUseGetByText(tag: string, text: string): boolean {
   if (!text) return false;
   if (tag === "input" || tag === "textarea" || tag === "select") return false;
   return true;
+}
+
+function buildHealingLocatorCandidates(
+  root: LocatorRoot,
+  options: HealingLocatorOptions,
+): HealingLocatorCandidate[] {
+  const candidates: HealingLocatorCandidate[] = [];
+
+  if (options.role && options.name) {
+    candidates.push({
+      description: `role=${String(options.role)}, name=${String(options.name)}`,
+      locator: root.getByRole(options.role, { name: options.name }),
+    });
+  }
+
+  if (options.label) {
+    candidates.push({
+      description: `label=${String(options.label)}`,
+      locator: root.getByLabel(options.label),
+    });
+  }
+
+  if (options.placeholder) {
+    candidates.push({
+      description: `placeholder=${String(options.placeholder)}`,
+      locator: root.getByPlaceholder(options.placeholder),
+    });
+  }
+
+  if (options.text) {
+    candidates.push({
+      description: `text=${String(options.text)}`,
+      locator: root.getByText(options.text),
+    });
+  }
+
+  if (options.testId) {
+    candidates.push({
+      description: `testId=${String(options.testId)}`,
+      locator: root.getByTestId(options.testId),
+    });
+  }
+
+  if (options.css) {
+    candidates.push({
+      description: `css=${options.css}`,
+      locator: root.locator(options.css),
+    });
+  }
+
+  if (options.xpath) {
+    candidates.push({
+      description: `xpath=${options.xpath}`,
+      locator: root.locator(`xpath=${options.xpath}`),
+    });
+  }
+
+  return candidates;
+}
+
+export async function getHealingLocator(
+  root: LocatorRoot,
+  options: HealingLocatorOptions,
+): Promise<Locator> {
+  const timeout = options.timeout ?? 1000;
+  const candidates = buildHealingLocatorCandidates(root, options);
+
+  for (const candidate of candidates) {
+    const locator = candidate.locator.first();
+    const isVisible = await locator
+      .waitFor({ state: "visible", timeout })
+      .then(() => true)
+      .catch(() => false);
+
+    if (isVisible) {
+      return locator;
+    }
+  }
+
+  throw new Error(
+    `No healing locator matched. Tried: ${candidates
+      .map((candidate) => candidate.description)
+      .join(", ")}`,
+  );
 }
 
 export async function collectLocatorCandidates(
