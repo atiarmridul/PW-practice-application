@@ -36,12 +36,27 @@ A lightweight Angular 14 app based on Akveo ngx-admin, intended for UI automatio
 - `npx playwright test` - run Playwright tests
 
 ## Project Structure
-- `src/app` - Angular app source
-  - `@core` - core module, mock services, data definitions
-  - `@theme` - shared components, layouts, theme styles
-  - `pages` - feature modules and screens
-- `src/assets` - images and sample data
-- `tests` - Playwright tests
+
+```txt
+PW-practice-application/
+├── src/
+│   ├── app/
+│   │   ├── @core/                  # Core services, data providers, and utilities
+│   │   ├── @theme/                 # Shared layouts, UI components, and styling
+│   │   ├── pages/                  # Feature modules and application pages
+│   │   ├── app-routing.module.ts   # Root routing configuration
+│   │   └── app.module.ts           # Main Angular module
+│   │
+│   ├── assets/                     # Static assets and sample resources
+│   ├── environments/               # Environment configurations
+│   └── styles.scss                 # Global application styles
+│
+├── tests/                          # Playwright automation test suites
+├── playwright.config.ts            # Playwright framework configuration
+├── package.json                    # Project dependencies and scripts
+├── tsconfig.json                   # TypeScript configuration
+└── README.md                       # Project documentation
+```
 
 ## Routing
 - Root routes: `src/app/app-routing.module.ts`
