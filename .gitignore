@@ -9,6 +9,7 @@
 # Angular/CLI caches
 /.angular/
 /.sass-cache/
+/.cache/
 
 # Coverage and reports
 /coverage/
@@ -42,6 +43,10 @@ libpeerconnection.log
 *.launch
 .settings/
 *.sublime-workspace
+.vscode-test/
+.eslintcache
+.stylelintcache
+.prettiercache
 
 # VSCode (keep workspace settings)
 .vscode/*
@@ -49,10 +54,15 @@ libpeerconnection.log
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/mcp.json
 
 # Misc
 /typings/
 /docs/
+*.tsbuildinfo
+.pnpm-store/
+.npm/
+.yarn/
 
 # e2e build artifacts (if present)
 /e2e/*.js

@@ -19,3 +19,10 @@ test("Locator with Syntax rules", async ({ page }) => {
   await page.locator(':text-is("Using the Grid")').click()
 })
 
+test("User Facing locator", async ({ page }) => {
+  await page.getByRole("textbox", { name: "Email" }).first().click();
+
+  await page.getByLabel("Email").first().click();
+
+});
+
